@@ -1,14 +1,14 @@
-import { NavItem } from "@/types/nav"
+import { NavItem } from "@/types/nav";
 
 interface SiteConfig {
-  name: string
-  description: string
-  mainNav: NavItem[]
+  name: string;
+  description: string;
+  mainNav: NavItem[];
   links: {
-    twitter: string
-    github: string
-    docs: string
-  }
+    twitter: string;
+    github: string;
+    docs: string;
+  };
 }
 
 export const siteConfig: SiteConfig = {
@@ -26,4 +26,4 @@ export const siteConfig: SiteConfig = {
     github: "https://github.com/shadcn/ui",
     docs: "https://ui.shadcn.com",
   },
-}
+};
