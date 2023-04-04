@@ -1,4 +1,4 @@
-import FlowChart from "./flowchart";
+import FlowChart from "../components/flowchart/flowchart";
 
 export default function IndexPage() {
   return <FlowChart />;
