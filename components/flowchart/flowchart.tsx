@@ -47,7 +47,7 @@ export default function FlowChart() {
         />
       </div>
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent position="right" size="sm">
+        <SheetContent position="right" size="content">
           <pre>{JSON.stringify(selectedNode, null, 2)}</pre>
         </SheetContent>
       </Sheet>
