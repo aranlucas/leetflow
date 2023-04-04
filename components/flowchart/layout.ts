@@ -1,16 +1,16 @@
 import dagre from "dagre";
 import { Node, Edge, Position } from "reactflow";
 
-const dagreGraph = new dagre.graphlib.Graph();
-dagreGraph.setDefaultEdgeLabel(() => ({}));
+const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 172;
-const nodeHeight = 36;
+const nodeWidth = 250;
+const nodeHeight = 60;
+type direction = "TB" | "LR";
 
 export const getLayoutedElements = (
   nodes: Node[],
   edges: Edge[],
-  direction = "TB"
+  direction: direction = "TB"
 ) => {
   const isHorizontal = direction === "LR";
   dagreGraph.setGraph({ rankdir: direction });

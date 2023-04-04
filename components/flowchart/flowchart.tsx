@@ -20,9 +20,7 @@ export default function FlowChart() {
         nodes={nodes}
         edges={edges}
         nodesDraggable={false}
-        panOnDrag={false}
         nodesConnectable={false}
-        zoomOnScroll={false}
         proOptions={{ hideAttribution: true }}
         fitView
       />
