@@ -13,6 +13,9 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
+    "@mdx-js/loader": "^2.3.0",
+    "@mdx-js/react": "^2.3.0",
+    "@next/mdx": "^13.3.0",
     "@radix-ui/react-accessible-icon": "^1.0.2",
     "@radix-ui/react-accordion": "^1.1.1",
     "@radix-ui/react-alert-dialog": "^1.0.3",
@@ -45,32 +48,36 @@
     "clsx": "^1.2.1",
     "cmdk": "^0.2.0",
     "dagre": "^0.8.5",
-    "lucide-react": "0.130.0",
-    "next": "13.2.4",
+    "lodash-es": "^4.17.21",
+    "lucide-react": "0.132.0",
+    "next": "13.3.0",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reactflow": "^11.7.0",
     "sharp": "^0.32.0",
-    "tailwind-merge": "^1.11.0",
+    "tailwind-merge": "^1.12.0",
     "tailwindcss-animate": "^1.0.5"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
+    "@tailwindcss/typography": "^0.5.9",
     "@types/dagre": "^0.7.48",
+    "@types/lodash-es": "^4.17.7",
+    "@types/mdx": "^2.0.4",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "autoprefixer": "^10.4.14",
-    "eslint": "^8.37.0",
-    "eslint-config-next": "^13.2.5-canary.28",
+    "eslint": "^8.38.0",
+    "eslint-config-next": "^13.3.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-tailwindcss": "^3.10.3",
+    "eslint-plugin-tailwindcss": "^3.11.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.7",
     "tailwindcss": "^3.3.1",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   }
 }

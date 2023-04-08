@@ -1,6 +1,22 @@
+import dynamic from "next/dynamic";
 import { Node, Edge, MarkerType } from "reactflow";
 
-const position = { x: 0, y: 0 };
+const Start = dynamic(() => import("@/docs/start.mdx"), {
+  loading: () => <p>Loading...</p>,
+});
+
+const Backtracking = dynamic(() => import("@/docs/backtracking.mdx"), {
+  loading: () => <p>Loading...</p>,
+});
+
+const TwoPointers = dynamic(() => import("@/docs/two-pointers.mdx"), {
+  loading: () => <p>Loading...</p>,
+});
+
+type NodeID = (typeof id)[keyof typeof id];
+type MyNode = Node & { id: NodeID };
+type MyEdge = Omit<Edge, "id"> & { source: NodeID; target: NodeID };
+
 const id = {
   start: "start",
   inputDecisionArray: "input-decision-array",
@@ -21,10 +37,17 @@ const id = {
   heap: "heap",
   monotonicQueue: "monotonic-queue",
   trie: "trie",
-};
+} as const;
 
-export const initialNodes: Node[] = [
-  { id: id.start, position, data: { label: "start" }, type: "input" },
+const position = { x: 0, y: 0 };
+
+export const initialNodes: MyNode[] = [
+  {
+    id: id.start,
+    position,
+    data: { label: "start", content: <Start /> },
+    type: "input",
+  },
   {
     id: id.inputDecisionArray,
     position,
@@ -54,14 +77,7 @@ export const initialNodes: Node[] = [
   {
     id: id.twoPointers,
     position,
-    data: { label: "two-pointers" },
-    type: "default",
-  },
-
-  {
-    id: id.questionAskingFor,
-    position,
-    data: { label: "question is asking for" },
+    data: { label: "two-pointers", content: <TwoPointers /> },
     type: "default",
   },
   {
@@ -69,6 +85,13 @@ export const initialNodes: Node[] = [
     position,
     data: { label: "Hash map or set" },
     type: "output",
+  },
+
+  {
+    id: id.questionAskingFor,
+    position,
+    data: { label: "question is asking for" },
+    type: "default",
   },
 
   {
@@ -104,12 +127,7 @@ export const initialNodes: Node[] = [
     },
     type: "output",
   },
-  {
-    id: id.backtracking,
-    position,
-    data: { label: "backtracking" },
-    type: "output",
-  },
+
   {
     id: id.notGreedy,
     position,
@@ -122,6 +140,7 @@ export const initialNodes: Node[] = [
     data: { label: "Sliding window or counting hash map" },
     type: "output",
   },
+
   {
     id: id.maxMin,
     position,
@@ -146,14 +165,19 @@ export const initialNodes: Node[] = [
     data: { label: "Trie" },
     type: "output",
   },
+  {
+    id: id.backtracking,
+    position,
+    data: { label: "backtracking", content: <Backtracking /> },
+    type: "output",
+  },
 ];
 
-const edges: Omit<Edge, "id">[] = [
+const edges: MyEdge[] = [
   {
     source: id.start,
     target: id.inputDecisionArray,
     type: "smoothstep",
-
     markerEnd: {
       type: MarkerType.Arrow,
     },
@@ -163,6 +187,14 @@ const edges: Omit<Edge, "id">[] = [
     target: id.inputDecisionGraph,
     type: "smoothstep",
 
+    markerEnd: {
+      type: MarkerType.Arrow,
+    },
+  },
+  {
+    source: id.always,
+    target: id.map,
+    type: "smoothstep",
     markerEnd: {
       type: MarkerType.Arrow,
     },
@@ -198,16 +230,7 @@ const edges: Omit<Edge, "id">[] = [
       type: MarkerType.Arrow,
     },
   },
-  {
-    source: id.questionAskingFor,
-    target: id.backtracking,
-    label: "ALL of something. Permutations/Combinations/Subsets",
-    type: "smoothstep",
 
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
   {
     source: id.questionAskingFor,
     target: id.stack,
@@ -229,13 +252,16 @@ const edges: Omit<Edge, "id">[] = [
     },
   },
   {
-    source: id.always,
-    target: id.map,
+    source: id.questionAskingFor,
+    target: id.backtracking,
+    label: "ALL of something. Permutations/Combinations/Subsets",
     type: "smoothstep",
+
     markerEnd: {
       type: MarkerType.Arrow,
     },
   },
+
   {
     source: id.questionAskingFor,
     target: id.map,

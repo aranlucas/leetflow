@@ -1,19 +1,8 @@
 "use client";
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from "../ui/sheet";
+import { Sheet, SheetContent } from "../ui/sheet";
 import { initialEdges, initialNodes } from "./elements";
 import { getLayoutedElements } from "./layout";
-import { Label } from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
 import ReactFlow, { Node, useEdgesState, useNodesState } from "reactflow";
 import "reactflow/dist/style.css";
@@ -48,7 +37,9 @@ export default function FlowChart() {
       </div>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent position="right" size="content">
-          <pre>{JSON.stringify(selectedNode, null, 2)}</pre>
+          <article className="prose dark:prose-invert">
+            {selectedNode?.data?.content}
+          </article>
         </SheetContent>
       </Sheet>
     </>

@@ -59,7 +59,7 @@ const SheetOverlay = forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
 const sheetVariants = cva(
-  "fixed z-50 scale-100 gap-4 bg-white p-6 opacity-100 dark:bg-slate-900",
+  "fixed z-50 scale-100 gap-4 bg-white p-6 opacity-100 dark:bg-slate-900 overflow-y-auto",
   {
     variants: {
       position: {

@@ -42,3 +42,7 @@ export const getLayoutedElements = (
 
   return { nodes, edges };
 };
+
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
+}
