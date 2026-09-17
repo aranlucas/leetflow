@@ -28,7 +28,7 @@ function Shell({
   return (
     <div
       className={cn(
-        "w-[248px] rounded-2xl border bg-white p-3.5 text-left shadow-sm transition-all dark:bg-zinc-900",
+        "w-[264px] rounded-2xl border bg-white p-4 text-left shadow-sm transition-all dark:bg-zinc-900",
         kind === "start" && "border-amber-400/60 shadow-amber-500/10 dark:border-amber-400/40",
         kind === "decision" && "border-sky-500/30 dark:border-sky-400/30",
         kind === "technique" && "border-zinc-200 dark:border-zinc-800",

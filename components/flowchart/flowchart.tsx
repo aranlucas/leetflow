@@ -300,7 +300,7 @@ function Canvas() {
       setSheetOpen(true);
       const n = nodes.find((x) => x.id === id);
       if (n) {
-        void setCenter(n.position.x + 124, n.position.y + 45, {
+        void setCenter(n.position.x + 132, n.position.y + 75, {
           zoom: 1.1,
           duration: 400,
         });
@@ -358,7 +358,7 @@ function Canvas() {
             />
           </div>
         </div>
-        <ScrollArea className="h-[320px] lg:h-[560px]">
+        <ScrollArea className="h-[340px] lg:h-[calc(70vh-240px)] lg:min-h-[320px]">
           <div className="space-y-1 p-2">
             {filtered.map((p) => {
               const done = learned.includes(p.slug);
@@ -436,7 +436,7 @@ function Canvas() {
             </Button>
           </div>
         </div>
-        <div className="h-[520px] w-full lg:h-[640px]">
+        <div className="h-[70vh] max-h-[860px] min-h-[560px] w-full lg:h-[72vh]">
           <ReactFlow
             nodes={nodes}
             edges={edges}

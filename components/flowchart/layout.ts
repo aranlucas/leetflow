@@ -25,8 +25,10 @@ function nodePosition(id: string): PositionedNode {
   throw new Error(`dagre produced no position for node "${id}"`);
 }
 
-const nodeWidth = 250;
-const nodeHeight = 60;
+// Measured against the actual card sizes in nodes.tsx (w-[264px], cards run
+// ~130-150px tall). Underestimating here packs nodes on top of each other.
+const nodeWidth = 264;
+const nodeHeight = 150;
 type direction = "TB" | "LR";
 
 export const getLayoutedElements = <N extends Node, E extends Edge>(
@@ -35,7 +37,13 @@ export const getLayoutedElements = <N extends Node, E extends Edge>(
   direction: direction = "TB",
 ) => {
   const isHorizontal = direction === "LR";
-  dagreGraph.setGraph({ rankdir: direction });
+  dagreGraph.setGraph({
+    rankdir: direction,
+    ranksep: 90,
+    nodesep: 60,
+    marginx: 24,
+    marginy: 24,
+  });
 
   for (const node of nodes) {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
