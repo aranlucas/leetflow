@@ -1,10 +1,6 @@
 import withMDX from "@next/mdx";
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
-};
+const nextConfig = {};
 
 export default withMDX()(nextConfig);

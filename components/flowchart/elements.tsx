@@ -1,380 +1,118 @@
-import dynamic from "next/dynamic";
-import { Node, Edge, MarkerType } from "reactflow";
+import { MarkerType, type Edge } from "@xyflow/react";
 
-const Start = dynamic(() => import("@/docs/start.mdx"), {
-  loading: () => <p>Loading...</p>,
+import { PATTERNS } from "@/lib/patterns";
+
+import type { FlowNode } from "./nodes";
+
+const at = { x: 0, y: 0 };
+
+const technique = (slug: keyof typeof PATTERNS): FlowNode => ({
+  id: slug,
+  type: "technique",
+  position: at,
+  data: {
+    title: PATTERNS[slug].name,
+    subtitle: PATTERNS[slug].tagline,
+    kind: "technique",
+    slug,
+  },
 });
 
-const Backtracking = dynamic(() => import("@/docs/backtracking.mdx"), {
-  loading: () => <p>Loading...</p>,
+const decision = (id: string, title: string, subtitle?: string): FlowNode => ({
+  id,
+  type: "decision",
+  position: at,
+  data: { title, subtitle, kind: "decision" },
 });
 
-const TwoPointers = dynamic(() => import("@/docs/two-pointers.mdx"), {
-  loading: () => <p>Loading...</p>,
+const start = (id: string, title: string, subtitle?: string): FlowNode => ({
+  id,
+  type: "start",
+  position: at,
+  data: { title, subtitle, kind: "start" },
 });
 
-type NodeID = (typeof id)[keyof typeof id];
-type MyNode = Node & { id: NodeID };
-type MyEdge = Omit<Edge, "id"> & { source: NodeID; target: NodeID };
-
-const id = {
-  start: "start",
-  inputDecisionArray: "input-decision-array",
-  inputDecisionGraph: "input-decision-graph",
-  twoPointers: "two-pointers",
-  questionAskingFor: "question-asking-for",
-  backtracking: "backtracking",
-  stack: "stack",
-  map: "map",
-  greedyDecision: "decision-greedy",
-  greedy: "greedy",
-  dp: "dp",
-  always: "always",
-  binarySearch: "binary-search",
-  notGreedy: "not-greedy",
-  slidingWindow: "sliding-window",
-  maxMin: "max-min",
-  heap: "heap",
-  monotonicQueue: "monotonic-queue",
-  trie: "trie",
-} as const;
-
-const position = { x: 0, y: 0 };
-
-export const initialNodes: MyNode[] = [
-  {
-    id: id.start,
-    position,
-    data: { label: "start", content: <Start /> },
-    type: "input",
-  },
-  {
-    id: id.inputDecisionArray,
-    position,
-    data: { label: "input is sorted array" },
-    type: "default",
-  },
-  {
-    id: id.stack,
-    position,
-    data: { label: "Stack or monotonic queue" },
-    type: "output",
-  },
-  {
-    id: id.binarySearch,
-    position,
-    data: {
-      label: "Binary Search",
-    },
-    type: "output",
-  },
-  {
-    id: id.inputDecisionGraph,
-    position,
-    data: { label: "input is graph" },
-    type: "default",
-  },
-  {
-    id: id.twoPointers,
-    position,
-    data: { label: "two-pointers", content: <TwoPointers /> },
-    type: "default",
-  },
-  {
-    id: id.map,
-    position,
-    data: { label: "Hash map or set" },
-    type: "output",
-  },
-
-  {
-    id: id.questionAskingFor,
-    position,
-    data: { label: "question is asking for" },
-    type: "default",
-  },
-
-  {
-    id: id.greedyDecision,
-    position,
-    data: {
-      label:
-        '"Decisions" need to be made, which are affected by other decisions',
-    },
-    type: "default",
-  },
-
-  {
-    id: id.always,
-    position,
-    data: { label: "Think about for any problem" },
-    type: "input",
-  },
-
-  {
-    id: id.greedy,
-    position,
-    data: {
-      label: "Greedy",
-    },
-    type: "default",
-  },
-  {
-    id: id.dp,
-    position,
-    data: {
-      label: "Dynamic Programming",
-    },
-    type: "output",
-  },
-
-  {
-    id: id.notGreedy,
-    position,
-    data: { label: "Question is asking for/involves..." },
-    type: "default",
-  },
-  {
-    id: id.slidingWindow,
-    position,
-    data: { label: "Sliding window or counting hash map" },
-    type: "output",
-  },
-
-  {
-    id: id.maxMin,
-    position,
-    data: { label: "Elements are added/removed in..." },
-    type: "default",
-  },
-  {
-    id: id.heap,
-    position,
-    data: { label: "Heap" },
-    type: "output",
-  },
-  {
-    id: id.monotonicQueue,
-    position,
-    data: { label: "Monotonic Queue" },
-    type: "output",
-  },
-  {
-    id: id.trie,
-    position,
-    data: { label: "Trie" },
-    type: "output",
-  },
-  {
-    id: id.backtracking,
-    position,
-    data: { label: "backtracking", content: <Backtracking /> },
-    type: "output",
-  },
+export const initialNodes: FlowNode[] = [
+  start("start", "What is the input?", "Follow the chart — answer each question"),
+  decision("q-array", "Sorted array?", "Or sortable / rotated / searchable answer space"),
+  decision("q-graph", "Graph, grid, or edges?", "Nodes, islands, prerequisites, paths"),
+  technique("two-pointers"),
+  technique("binary-search"),
+  decision("q-ask", "What is the question asking for?", "Match the output shape to a pattern"),
+  technique("stack"),
+  technique("trie"),
+  technique("backtracking"),
+  technique("hash-map"),
+  decision(
+    "q-decisions",
+    "Do decisions affect future decisions?",
+    "Overlapping subproblems → DP, else greedy",
+  ),
+  technique("dp"),
+  decision(
+    "q-greedy",
+    "Is greedy safe?",
+    "Threshold / feasibility zones → binary search on answer",
+  ),
+  technique("greedy"),
+  decision(
+    "q-shape",
+    "Subarrays? Or repeated max/min?",
+    "Contiguous → window · extremes → heap/queue",
+  ),
+  technique("sliding-window"),
+  decision("q-extremes", "How are extremes used?", "Random access → heap · windowed → mono queue"),
+  technique("heap"),
+  technique("mono-queue"),
+  technique("graph"),
+  start("always", "Universal tools", "Try these on EVERY problem first"),
 ];
 
-const edges: MyEdge[] = [
-  {
-    source: id.start,
-    target: id.inputDecisionArray,
-    type: "smoothstep",
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.start,
-    target: id.inputDecisionGraph,
-    type: "smoothstep",
+export interface FlowEdge {
+  source: string;
+  target: string;
+  label?: string;
+}
 
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.always,
-    target: id.map,
-    type: "smoothstep",
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.inputDecisionArray,
-    target: id.binarySearch,
-    label: "Yes",
+const edge = (source: string, target: string, label?: string): FlowEdge => ({
+  source,
+  target,
+  label,
+});
 
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.inputDecisionArray,
-    target: id.twoPointers,
-    label: "Yes",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.inputDecisionArray,
-    target: id.questionAskingFor,
-    label: "No",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-
-  {
-    source: id.questionAskingFor,
-    target: id.stack,
-    label: "String building \n Distance between elements",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.questionAskingFor,
-    target: id.trie,
-    label: "Prefix matching",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.questionAskingFor,
-    target: id.backtracking,
-    label: "ALL of something. Permutations/Combinations/Subsets",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-
-  {
-    source: id.questionAskingFor,
-    target: id.map,
-    label: "Finding a specific element",
-    type: "smoothstep",
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-
-  {
-    source: id.questionAskingFor,
-    target: id.greedyDecision,
-    type: "smoothstep",
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-
-  {
-    source: id.greedyDecision,
-    target: id.dp,
-    label: "Yes",
-    type: "smoothstep",
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.greedyDecision,
-    target: id.greedy,
-    label: "No",
-    type: "smoothstep",
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.greedy,
-    target: id.binarySearch,
-    label:
-      'Problem satisfies property where "possible" and "impossible" are two infinite zones separated by threshold',
-    type: "smoothstep",
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.twoPointers,
-    target: id.questionAskingFor,
-    label: "No",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.greedy,
-    target: id.notGreedy,
-    label: "Not necessarily greedy",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.notGreedy,
-    target: id.slidingWindow,
-    label: "Subarrays or substrings",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-
-  {
-    source: id.notGreedy,
-    target: id.maxMin,
-    label: "Continuously finding max/min elements",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.maxMin,
-    target: id.heap,
-    label: "Max/min continously removed",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
-  {
-    source: id.maxMin,
-    target: id.monotonicQueue,
-    label: "Sliding window fashion",
-    type: "smoothstep",
-
-    markerEnd: {
-      type: MarkerType.Arrow,
-    },
-  },
+export const initialEdges: FlowEdge[] = [
+  edge("start", "q-array"),
+  edge("start", "q-graph"),
+  edge("q-array", "binary-search", "Yes"),
+  edge("q-array", "two-pointers", "Sorted + pairs"),
+  edge("q-array", "q-ask", "No"),
+  edge("two-pointers", "q-ask", "Not pairs"),
+  edge("q-graph", "graph", "Yes — traverse"),
+  edge("q-graph", "q-ask", "No"),
+  edge("q-ask", "stack", "Nesting / distances"),
+  edge("q-ask", "trie", "Prefixes"),
+  edge("q-ask", "backtracking", "ALL combos"),
+  edge("q-ask", "hash-map", "Find / count"),
+  edge("q-ask", "q-decisions", "Optimization"),
+  edge("q-decisions", "dp", "Yes — overlap"),
+  edge("q-decisions", "q-greedy", "No"),
+  edge("q-greedy", "binary-search", "Threshold"),
+  edge("q-greedy", "greedy", "Greedy works"),
+  edge("q-greedy", "q-shape", "Not greedy"),
+  edge("q-shape", "sliding-window", "Subarrays"),
+  edge("q-shape", "q-extremes", "Max / min"),
+  edge("q-extremes", "heap", "Top-K / median"),
+  edge("q-extremes", "mono-queue", "Windowed"),
+  edge("always", "hash-map", "Map / set first"),
+  edge("greedy", "sliding-window", "…or windows"),
 ];
 
-export const initialEdges = edges.map((e) => {
-  return {
-    id: `${e.source}-${e.target}`,
-    ...e,
-  };
-});
+export const reactFlowEdges: Edge[] = initialEdges.map((e) => ({
+  id: `${e.source}→${e.target}${e.label ? `:${e.label}` : ""}`,
+  source: e.source,
+  target: e.target,
+  label: e.label,
+  type: "smoothstep",
+  animated: false,
+  markerEnd: { type: MarkerType.ArrowClosed },
+}));

@@ -1,4 +1,4 @@
-import { NavItem } from "@/types/nav";
+import type { NavItem } from "@/types/nav";
 
 interface SiteConfig {
   name: string;
@@ -7,13 +7,17 @@ interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: "Next.js",
+  name: "LeetFlow",
   description:
-    "Beautifully designed components built with Radix UI and Tailwind CSS.",
+    "From problem statement to pattern in 30 seconds. Interactive flowcharts, code templates, and curated LeetCode problems.",
   mainNav: [
     {
-      title: "Home",
-      href: "/",
+      title: "Flowchart",
+      href: "/#flowchart",
+    },
+    {
+      title: "Patterns",
+      href: "/#patterns",
     },
   ],
 };

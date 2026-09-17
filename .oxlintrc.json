@@ -1,0 +1,118 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "import",
+    "jsx-a11y",
+    "nextjs",
+    "node",
+    "oxc",
+    "promise",
+    "react",
+    "typescript",
+    "unicorn"
+  ],
+  "categories": {
+    "correctness": "deny",
+    "suspicious": "deny",
+    "pedantic": "deny",
+    "perf": "deny",
+    "style": "deny",
+    "restriction": "deny"
+  },
+  "ignorePatterns": [
+    ".next/**",
+    "out/**",
+    "dist/**",
+    "node_modules/**",
+    "next-env.d.ts",
+    "*.esm.js"
+  ],
+  "rules": {
+    // Automatic JSX runtime (Next.js): React never needs to be in scope.
+    "react/react-in-jsx-scope": "off",
+    // className passthrough is the Tailwind/shadcn composition pattern.
+    "react/forbid-component-props": "off",
+    // Arbitrary depth/shape limits that fight normal UI code.
+    "react/jsx-max-depth": "off",
+    "react/no-multi-comp": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": "off",
+    "react/jsx-no-literals": "off",
+    "react/jsx-filename-extension": "off",
+    // Conflicts with Next.js `metadata` exports and shadcn `*Variants` exports.
+    "react/only-export-components": "off",
+    // <Icons.logo /> member expressions are the shadcn icon pattern.
+    "react/jsx-pascal-case": "off",
+    // Ternaries are idiomatic React conditional rendering.
+    "eslint/no-ternary": "off",
+    "eslint/no-nested-ternary": "off",
+    "unicorn/no-nested-ternary": "off",
+    // Import sorting is not enforced (oxfmt has no import plugin); the rest
+    // below contradict each other (prefer vs. ban default exports).
+    "eslint/sort-keys": "off",
+    "eslint/sort-imports": "off",
+    "import/no-named-export": "off",
+    "import/group-exports": "off",
+    "import/exports-last": "off",
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "off",
+    // Global CSS side-effect imports are required by Next.js.
+    "import/no-unassigned-import": "off",
+    // Inline `type` modifiers + single import statements: satisfies both
+    // no-duplicate-imports and consistent-type-imports at once.
+    "import/consistent-type-specifier-style": "off",
+    // Would demand `readonly` on every React prop/param; props are never
+    // mutated in this codebase, so this is annotation noise, not safety.
+    "typescript/prefer-readonly-parameter-types": "off",
+    // Would ban `subtitle && ...` / `item.href && ...` JSX conditional
+    // rendering; TS truthiness semantics are safe and idiomatic here.
+    "typescript/strict-boolean-expressions": "off",
+    "typescript/consistent-type-imports": [
+      "error",
+      { "prefer": "type-imports", "fixStyle": "inline-type-imports" }
+    ],
+    // The learned-patterns effect syncs React state with the external
+    // localStorage store on mount (SSR-safe); that is what effects are for.
+    "react/set-state-in-effect": "off",
+    // Stylistic straightjackets; tsc covers safety.
+    "eslint/one-var": "off",
+    "eslint/id-length": "off",
+    "eslint/new-cap": "off",
+    "eslint/func-style": "off",
+    "eslint/no-magic-numbers": "off",
+    "eslint/no-undefined": "off",
+    "eslint/max-lines": "off",
+    "eslint/max-lines-per-function": "off",
+    "eslint/max-statements": "off",
+    "import/max-dependencies": "off",
+    // `import * as X` is the documented shadcn/Radix pattern.
+    "import/no-namespace": "off",
+    // Would ban `useState<T | null>(null)` and other React idioms.
+    "unicorn/no-null": "off",
+    // tsc --noEmit already guarantees type safety; explicit return types on
+    // every JSX callback is noise, not signal.
+    "typescript/explicit-function-return-type": "off",
+    "typescript/explicit-module-boundary-types": "off",
+    // Would ban `?.` and `{...props}` forwarding used across shadcn.
+    "oxc/no-rest-spread-properties": "off",
+    "oxc/no-optional-chaining": "off",
+    // Function declarations hoist, so forward references are safe; the rule
+    // still guards const/let/class TDZ hazards.
+    "eslint/no-use-before-define": ["error", { "functions": false }],
+    // `void` is the documented way to mark intentionally-floating promises
+    // (required by typescript/no-floating-promises).
+    "eslint/no-void": "off",
+    // cmdk's documented styling pattern uses custom element attributes.
+    "react/no-unknown-property": ["error", { "ignore": ["cmdk-input-wrapper", "cmdk-input"] }]
+  },
+  "overrides": [
+    {
+      "files": ["components/ui/button.tsx"],
+      // The Button wrapper forwards a `type` prop that defaults to "button";
+      // the rule cannot verify dynamic values, and the default is safe.
+      "rules": {
+        "react/button-has-type": "off"
+      }
+    }
+  ]
+}
