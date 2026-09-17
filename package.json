@@ -49,7 +49,7 @@
     "cmdk": "^0.2.0",
     "dagre": "^0.8.5",
     "lodash-es": "^4.17.21",
-    "lucide-react": "0.132.0",
+    "lucide-react": "1.45.0",
     "next": "13.3.0",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
