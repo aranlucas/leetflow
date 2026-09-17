@@ -5,6 +5,8 @@ import { Handle, Position, type Node, type NodeProps } from "@xyflow/react";
 import { PATTERNS } from "@/lib/patterns";
 import { cn } from "@/lib/utils";
 
+import type { FlowDirection } from "./layout";
+
 export type FlowKind = "start" | "decision" | "technique";
 
 export interface FlowNodeData extends Record<string, unknown> {
@@ -12,9 +14,21 @@ export interface FlowNodeData extends Record<string, unknown> {
   subtitle?: string;
   kind: FlowKind;
   slug?: string;
+  /** Set by layout; drives which faces the handles sit on. */
+  direction?: FlowDirection;
 }
 
 export type FlowNode = Node<FlowNodeData>;
+
+function handlePositions(data: FlowNodeData): {
+  target: Position;
+  source: Position;
+} {
+  if (data.direction === "LR") {
+    return { target: Position.Left, source: Position.Right };
+  }
+  return { target: Position.Top, source: Position.Bottom };
+}
 
 function Shell({
   selected,
@@ -64,9 +78,10 @@ function KindTag({ kind }: { kind: FlowKind }) {
 }
 
 export function StartNode({ data, selected }: NodeProps<FlowNode>) {
+  const handles = handlePositions(data);
   return (
     <Shell selected={selected} kind="start">
-      <Handle type="target" position={Position.Top} className="!bg-amber-400" />
+      <Handle type="target" position={handles.target} className="!bg-amber-400" />
       <div className="flex items-center gap-2">
         <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-400 text-sm font-black text-zinc-950">
           {data.title === "Universal tools" ? "★" : "▶"}
@@ -79,15 +94,16 @@ export function StartNode({ data, selected }: NodeProps<FlowNode>) {
           {data.subtitle}
         </p>
       )}
-      <Handle type="source" position={Position.Bottom} className="!bg-amber-400" />
+      <Handle type="source" position={handles.source} className="!bg-amber-400" />
     </Shell>
   );
 }
 
 export function DecisionNode({ data, selected }: NodeProps<FlowNode>) {
+  const handles = handlePositions(data);
   return (
     <Shell selected={selected} kind="decision">
-      <Handle type="target" position={Position.Top} className="!bg-sky-500" />
+      <Handle type="target" position={handles.target} className="!bg-sky-500" />
       <div className="flex items-center gap-2">
         <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-500 text-sm font-black text-white">
           ?
@@ -100,16 +116,17 @@ export function DecisionNode({ data, selected }: NodeProps<FlowNode>) {
           {data.subtitle}
         </p>
       )}
-      <Handle type="source" position={Position.Bottom} className="!bg-sky-500" />
+      <Handle type="source" position={handles.source} className="!bg-sky-500" />
     </Shell>
   );
 }
 
 export function TechniqueNode({ data, selected }: NodeProps<FlowNode>) {
+  const handles = handlePositions(data);
   const pattern = data.slug ? PATTERNS[data.slug] : undefined;
   return (
     <Shell selected={selected} kind="technique">
-      <Handle type="target" position={Position.Top} className="!bg-emerald-500" />
+      <Handle type="target" position={handles.target} className="!bg-emerald-500" />
       <div className="flex items-center gap-2">
         <span
           className={cn("h-2.5 w-2.5 shrink-0 rounded-full", pattern?.accent ?? "bg-emerald-500")}
@@ -127,7 +144,7 @@ export function TechniqueNode({ data, selected }: NodeProps<FlowNode>) {
           {pattern.complexity}
         </p>
       )}
-      <Handle type="source" position={Position.Bottom} className="!bg-emerald-500" />
+      <Handle type="source" position={handles.source} className="!bg-emerald-500" />
     </Shell>
   );
 }

@@ -22,7 +22,7 @@ import {
   RotateCcw,
   Search,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import { DIFFICULTY_STYLES, PATTERNS, PATTERN_LIST } from "@/lib/patterns";
 import { cn } from "@/lib/utils";
 
 import { initialNodes, reactFlowEdges } from "./elements";
+import { ElkEdge } from "./elk-edge";
 import { getLayoutedElements } from "./layout";
 import { nodeTypes, type FlowNode } from "./nodes";
 
@@ -248,6 +249,8 @@ function Canvas() {
   const [query, setQuery] = useState("");
   const [learned, setLearned] = useState<string[]>([]);
   const { fitView, setCenter } = useReactFlow();
+  const edgeTypes = useMemo(() => ({ elk: ElkEdge }), []);
+  const layoutRun = useRef(0);
 
   useEffect(() => {
     try {
@@ -280,12 +283,19 @@ function Canvas() {
 
   const relayout = useCallback(
     (dir: Direction) => {
-      const { nodes: n, edges: e } = getLayoutedElements(initialNodes, reactFlowEdges, dir);
-      setNodes(n);
-      setEdges(e);
-      setTimeout(() => {
-        void fitView({ padding: 0.2, duration: 300 });
-      }, 50);
+      layoutRun.current += 1;
+      const run = layoutRun.current;
+      void (async () => {
+        const { nodes: n, edges: e } = await getLayoutedElements(initialNodes, reactFlowEdges, dir);
+        if (layoutRun.current !== run) {
+          return;
+        }
+        setNodes(n);
+        setEdges(e);
+        setTimeout(() => {
+          void fitView({ padding: 0.2, duration: 300 });
+        }, 50);
+      })();
     },
     [fitView, setEdges, setNodes],
   );
@@ -441,6 +451,7 @@ function Canvas() {
             nodes={nodes}
             edges={edges}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onNodeClick={(_, node) => {
@@ -453,9 +464,6 @@ function Canvas() {
             minZoom={0.3}
             defaultEdgeOptions={{
               style: { strokeWidth: 1.6, stroke: "#a1a1aa" },
-              labelStyle: { fontSize: 10, fontWeight: 700 },
-              labelBgPadding: [8, 4] as [number, number],
-              labelBgBorderRadius: 8,
             }}
           >
             <Background variant={BackgroundVariant.Dots} gap={22} size={1.2} />

@@ -112,7 +112,7 @@ export const reactFlowEdges: Edge[] = initialEdges.map((e) => ({
   source: e.source,
   target: e.target,
   label: e.label,
-  type: "smoothstep",
+  type: "elk",
   animated: false,
   markerEnd: { type: MarkerType.ArrowClosed },
 }));

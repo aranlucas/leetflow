@@ -96,6 +96,8 @@
     // Would ban `?.` and `{...props}` forwarding used across shadcn.
     "oxc/no-rest-spread-properties": "off",
     "oxc/no-optional-chaining": "off",
+    // Async/await is required (elk layout is async); the target supports it.
+    "oxc/no-async-await": "off",
     // Function declarations hoist, so forward references are safe; the rule
     // still guards const/let/class TDZ hazards.
     "eslint/no-use-before-define": ["error", { "functions": false }],
