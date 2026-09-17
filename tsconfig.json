@@ -29,7 +29,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/flowchart/elements.tsx",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

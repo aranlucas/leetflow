@@ -10,7 +10,6 @@
     "pnpm-lock.yaml",
     "next-env.d.ts",
     "tsconfig.tsbuildinfo",
-    "docs/**",
     "public/**",
     "dist/**",
     ".next/**",
