@@ -37,7 +37,10 @@ export function getPolylineMidpoint(points: RoutedPoint[]): RoutedPoint {
       const from = points[i - 1];
       const to = points[i];
       const ratio = lengths[i - 1] === 0 ? 0 : target / lengths[i - 1];
-      return { x: from.x + (to.x - from.x) * ratio, y: from.y + (to.y - from.y) * ratio };
+      return {
+        x: from.x + (to.x - from.x) * ratio,
+        y: from.y + (to.y - from.y) * ratio,
+      };
     }
     target -= lengths[i - 1];
   }

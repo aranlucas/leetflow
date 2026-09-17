@@ -352,7 +352,9 @@ function Canvas() {
           <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
             <div
               className="h-full rounded-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all"
-              style={{ width: `${(learned.length / PATTERN_LIST.length) * 100}%` }}
+              style={{
+                width: `${(learned.length / PATTERN_LIST.length) * 100}%`,
+              }}
             />
           </div>
           <div className="relative mt-3">

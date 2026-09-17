@@ -49,7 +49,12 @@ export const PATTERNS: Record<string, Pattern> = {
             right -= 1`,
     complexity: "O(n) time · O(1) space",
     problems: [
-      { id: 125, title: "Valid Palindrome", difficulty: "Easy", url: lc(125, "valid-palindrome") },
+      {
+        id: 125,
+        title: "Valid Palindrome",
+        difficulty: "Easy",
+        url: lc(125, "valid-palindrome"),
+      },
       {
         id: 11,
         title: "Container With Most Water",
@@ -143,7 +148,12 @@ def search_answer(lo, hi, feasible):
     return lo`,
     complexity: "O(log n) time · O(1) space",
     problems: [
-      { id: 704, title: "Binary Search", difficulty: "Easy", url: lc(704, "binary-search") },
+      {
+        id: 704,
+        title: "Binary Search",
+        difficulty: "Easy",
+        url: lc(704, "binary-search"),
+      },
       {
         id: 33,
         title: "Search in Rotated Sorted Array",
@@ -190,7 +200,12 @@ def count_subarrays(nums, k):
     complexity: "O(n) time · O(n) space",
     problems: [
       { id: 1, title: "Two Sum", difficulty: "Easy", url: lc(1, "two-sum") },
-      { id: 49, title: "Group Anagrams", difficulty: "Medium", url: lc(49, "group-anagrams") },
+      {
+        id: 49,
+        title: "Group Anagrams",
+        difficulty: "Medium",
+        url: lc(49, "group-anagrams"),
+      },
       {
         id: 128,
         title: "Longest Consecutive Sequence",
@@ -223,7 +238,12 @@ def count_subarrays(nums, k):
     return ans`,
     complexity: "O(n) time · O(n) space",
     problems: [
-      { id: 20, title: "Valid Parentheses", difficulty: "Easy", url: lc(20, "valid-parentheses") },
+      {
+        id: 20,
+        title: "Valid Parentheses",
+        difficulty: "Easy",
+        url: lc(20, "valid-parentheses"),
+      },
       {
         id: 739,
         title: "Daily Temperatures",
@@ -312,9 +332,24 @@ def kth_largest(nums, k):
     return ans`,
     complexity: "O(2^n / n!) time · O(n) space",
     problems: [
-      { id: 78, title: "Subsets", difficulty: "Medium", url: lc(78, "subsets") },
-      { id: 46, title: "Permutations", difficulty: "Medium", url: lc(46, "permutations") },
-      { id: 51, title: "N-Queens", difficulty: "Hard", url: lc(51, "n-queens") },
+      {
+        id: 78,
+        title: "Subsets",
+        difficulty: "Medium",
+        url: lc(78, "subsets"),
+      },
+      {
+        id: 46,
+        title: "Permutations",
+        difficulty: "Medium",
+        url: lc(46, "permutations"),
+      },
+      {
+        id: 51,
+        title: "N-Queens",
+        difficulty: "Hard",
+        url: lc(51, "n-queens"),
+      },
     ],
   },
   dp: {
@@ -344,14 +379,24 @@ def coin_change(coins, amount):
     return ans if ans != float("inf") else -1`,
     complexity: "O(n · target) time · O(target) space",
     problems: [
-      { id: 70, title: "Climbing Stairs", difficulty: "Easy", url: lc(70, "climbing-stairs") },
+      {
+        id: 70,
+        title: "Climbing Stairs",
+        difficulty: "Easy",
+        url: lc(70, "climbing-stairs"),
+      },
       {
         id: 300,
         title: "Longest Increasing Subsequence",
         difficulty: "Medium",
         url: lc(300, "longest-increasing-subsequence"),
       },
-      { id: 322, title: "Coin Change", difficulty: "Medium", url: lc(322, "coin-change") },
+      {
+        id: 322,
+        title: "Coin Change",
+        difficulty: "Medium",
+        url: lc(322, "coin-change"),
+      },
     ],
   },
   greedy: {
@@ -376,8 +421,18 @@ def coin_change(coins, amount):
     return True`,
     complexity: "O(n log n) time · O(1) space",
     problems: [
-      { id: 55, title: "Jump Game", difficulty: "Medium", url: lc(55, "jump-game") },
-      { id: 134, title: "Gas Station", difficulty: "Medium", url: lc(134, "gas-station") },
+      {
+        id: 55,
+        title: "Jump Game",
+        difficulty: "Medium",
+        url: lc(55, "jump-game"),
+      },
+      {
+        id: 134,
+        title: "Gas Station",
+        difficulty: "Medium",
+        url: lc(134, "gas-station"),
+      },
       {
         id: 763,
         title: "Partition Labels",
@@ -423,8 +478,18 @@ def coin_change(coins, amount):
         difficulty: "Medium",
         url: lc(208, "implement-trie-prefix-tree"),
       },
-      { id: 648, title: "Replace Words", difficulty: "Medium", url: lc(648, "replace-words") },
-      { id: 212, title: "Word Search II", difficulty: "Hard", url: lc(212, "word-search-ii") },
+      {
+        id: 648,
+        title: "Replace Words",
+        difficulty: "Medium",
+        url: lc(648, "replace-words"),
+      },
+      {
+        id: 212,
+        title: "Word Search II",
+        difficulty: "Hard",
+        url: lc(212, "word-search-ii"),
+      },
     ],
   },
   "mono-queue": {
@@ -517,8 +582,18 @@ def num_islands(grid):
         difficulty: "Medium",
         url: lc(200, "number-of-islands"),
       },
-      { id: 133, title: "Clone Graph", difficulty: "Medium", url: lc(133, "clone-graph") },
-      { id: 207, title: "Course Schedule", difficulty: "Medium", url: lc(207, "course-schedule") },
+      {
+        id: 133,
+        title: "Clone Graph",
+        difficulty: "Medium",
+        url: lc(133, "clone-graph"),
+      },
+      {
+        id: 207,
+        title: "Course Schedule",
+        difficulty: "Medium",
+        url: lc(207, "course-schedule"),
+      },
     ],
   },
 };
