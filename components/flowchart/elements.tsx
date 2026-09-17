@@ -94,7 +94,7 @@ export const initialEdges: FlowEdge[] = [
   edge("q-ask", "backtracking", "ALL combos"),
   edge("q-ask", "hash-map", "Find / count"),
   edge("q-ask", "q-decisions", "Optimization"),
-  edge("q-decisions", "dp", "Yes — overlap"),
+  edge("q-decisions", "dp", "Yes"),
   edge("q-decisions", "q-greedy", "No"),
   edge("q-greedy", "binary-search", "Threshold"),
   edge("q-greedy", "greedy", "Greedy works"),
@@ -112,7 +112,7 @@ export const reactFlowEdges: Edge[] = initialEdges.map((e) => ({
   source: e.source,
   target: e.target,
   label: e.label,
-  type: "smoothstep",
+  type: "elk",
   animated: false,
   markerEnd: { type: MarkerType.ArrowClosed },
 }));

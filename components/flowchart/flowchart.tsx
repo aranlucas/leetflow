@@ -22,7 +22,7 @@ import {
   RotateCcw,
   Search,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import { DIFFICULTY_STYLES, PATTERNS, PATTERN_LIST } from "@/lib/patterns";
 import { cn } from "@/lib/utils";
 
 import { initialNodes, reactFlowEdges } from "./elements";
+import { ElkEdge } from "./elk-edge";
 import { getLayoutedElements } from "./layout";
 import { nodeTypes, type FlowNode } from "./nodes";
 
@@ -248,6 +249,8 @@ function Canvas() {
   const [query, setQuery] = useState("");
   const [learned, setLearned] = useState<string[]>([]);
   const { fitView, setCenter } = useReactFlow();
+  const edgeTypes = useMemo(() => ({ elk: ElkEdge }), []);
+  const layoutRun = useRef(0);
 
   useEffect(() => {
     try {
@@ -280,12 +283,19 @@ function Canvas() {
 
   const relayout = useCallback(
     (dir: Direction) => {
-      const { nodes: n, edges: e } = getLayoutedElements(initialNodes, reactFlowEdges, dir);
-      setNodes(n);
-      setEdges(e);
-      setTimeout(() => {
-        void fitView({ padding: 0.2, duration: 300 });
-      }, 50);
+      layoutRun.current += 1;
+      const run = layoutRun.current;
+      void (async () => {
+        const { nodes: n, edges: e } = await getLayoutedElements(initialNodes, reactFlowEdges, dir);
+        if (layoutRun.current !== run) {
+          return;
+        }
+        setNodes(n);
+        setEdges(e);
+        setTimeout(() => {
+          void fitView({ padding: 0.2, duration: 300 });
+        }, 50);
+      })();
     },
     [fitView, setEdges, setNodes],
   );
@@ -300,7 +310,7 @@ function Canvas() {
       setSheetOpen(true);
       const n = nodes.find((x) => x.id === id);
       if (n) {
-        void setCenter(n.position.x + 124, n.position.y + 45, {
+        void setCenter(n.position.x + 132, n.position.y + 75, {
           zoom: 1.1,
           duration: 400,
         });
@@ -358,7 +368,7 @@ function Canvas() {
             />
           </div>
         </div>
-        <ScrollArea className="h-[320px] lg:h-[560px]">
+        <ScrollArea className="h-[340px] lg:h-[calc(70vh-240px)] lg:min-h-[320px]">
           <div className="space-y-1 p-2">
             {filtered.map((p) => {
               const done = learned.includes(p.slug);
@@ -436,11 +446,12 @@ function Canvas() {
             </Button>
           </div>
         </div>
-        <div className="h-[520px] w-full lg:h-[640px]">
+        <div className="h-[70vh] max-h-[860px] min-h-[560px] w-full lg:h-[72vh]">
           <ReactFlow
             nodes={nodes}
             edges={edges}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onNodeClick={(_, node) => {
@@ -453,10 +464,6 @@ function Canvas() {
             minZoom={0.3}
             defaultEdgeOptions={{
               style: { strokeWidth: 1.6, stroke: "#a1a1aa" },
-              labelStyle: { fontSize: 10, fontWeight: 700 },
-              labelBgStyle: { fill: "white", fillOpacity: 0.9 },
-              labelBgPadding: [6, 3] as [number, number],
-              labelBgBorderRadius: 8,
             }}
           >
             <Background variant={BackgroundVariant.Dots} gap={22} size={1.2} />
