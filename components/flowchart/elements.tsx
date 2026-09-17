@@ -94,7 +94,7 @@ export const initialEdges: FlowEdge[] = [
   edge("q-ask", "backtracking", "ALL combos"),
   edge("q-ask", "hash-map", "Find / count"),
   edge("q-ask", "q-decisions", "Optimization"),
-  edge("q-decisions", "dp", "Yes — overlap"),
+  edge("q-decisions", "dp", "Yes"),
   edge("q-decisions", "q-greedy", "No"),
   edge("q-greedy", "binary-search", "Threshold"),
   edge("q-greedy", "greedy", "Greedy works"),

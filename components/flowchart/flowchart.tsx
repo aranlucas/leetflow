@@ -454,8 +454,7 @@ function Canvas() {
             defaultEdgeOptions={{
               style: { strokeWidth: 1.6, stroke: "#a1a1aa" },
               labelStyle: { fontSize: 10, fontWeight: 700 },
-              labelBgStyle: { fill: "white", fillOpacity: 0.9 },
-              labelBgPadding: [6, 3] as [number, number],
+              labelBgPadding: [8, 4] as [number, number],
               labelBgBorderRadius: 8,
             }}
           >
