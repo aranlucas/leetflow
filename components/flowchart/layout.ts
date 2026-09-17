@@ -1,48 +1,63 @@
-import dagre from "dagre";
-import { Node, Edge, Position } from "reactflow";
+import { graphlib, layout as dagreLayout } from "@dagrejs/dagre";
+import { Position, type Edge, type Node } from "@xyflow/react";
 
-const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
+const dagreGraph = new graphlib.Graph();
+dagreGraph.setDefaultEdgeLabel(() => ({}));
+
+interface PositionedNode {
+  x: number;
+  y: number;
+}
+
+/** Read a laid-out position back out of dagre, failing loudly on mismatch. */
+function nodePosition(id: string): PositionedNode {
+  const node: unknown = dagreGraph.node(id);
+  if (
+    typeof node === "object" &&
+    node !== null &&
+    "x" in node &&
+    "y" in node &&
+    typeof node.x === "number" &&
+    typeof node.y === "number"
+  ) {
+    return { x: node.x, y: node.y };
+  }
+  throw new Error(`dagre produced no position for node "${id}"`);
+}
 
 const nodeWidth = 250;
 const nodeHeight = 60;
 type direction = "TB" | "LR";
 
-export const getLayoutedElements = (
-  nodes: Node[],
-  edges: Edge[],
-  direction: direction = "TB"
+export const getLayoutedElements = <N extends Node, E extends Edge>(
+  nodes: N[],
+  edges: E[],
+  direction: direction = "TB",
 ) => {
   const isHorizontal = direction === "LR";
   dagreGraph.setGraph({ rankdir: direction });
 
-  nodes.forEach((node) => {
+  for (const node of nodes) {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
-  });
+  }
 
-  edges.forEach((edge) => {
+  for (const edge of edges) {
     dagreGraph.setEdge(edge.source, edge.target);
-  });
+  }
 
-  dagre.layout(dagreGraph);
+  dagreLayout(dagreGraph);
 
-  nodes.forEach((node) => {
-    const nodeWithPosition = dagreGraph.node(node.id);
+  for (const node of nodes) {
+    const nodeWithPosition = nodePosition(node.id);
     node.targetPosition = isHorizontal ? Position.Left : Position.Top;
     node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
 
-    // We are shifting the dagre node position (anchor=center center) to the top left
-    // so it matches the React Flow node anchor point (top left).
+    // Dagre anchors at center-center; XY Flow anchors at top-left.
     node.position = {
       x: nodeWithPosition.x - nodeWidth / 2,
       y: nodeWithPosition.y - nodeHeight / 2,
     };
-
-    return node;
-  });
+  }
 
   return { nodes, edges };
 };
-
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * max);
-}

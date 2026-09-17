@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { NavItem } from "@/types/nav";
-import Link from "next/link";
+import type { NavItem } from "@/types/nav";
 
 interface MainNavProps {
   items?: NavItem[];
@@ -25,15 +26,10 @@ function MobileNav({ items }: MainNavProps) {
           variant="ghost"
           className="-ml-4 text-base hover:bg-transparent focus:ring-0 md:hidden"
         >
-          <Icons.logo className="mr-2 h-4 w-4" />{" "}
-          <span className="font-bold">Menu</span>
+          <Icons.logo className="mr-2 h-4 w-4" /> <span className="font-bold">Menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="start"
-        sideOffset={24}
-        className="w-[300px] overflow-scroll"
-      >
+      <DropdownMenuContent align="start" sideOffset={24} className="w-[300px] overflow-scroll">
         <DropdownMenuLabel>
           <Link href="/" className="flex items-center">
             <Icons.logo className="mr-2 h-4 w-4" /> {siteConfig.name}
@@ -41,12 +37,12 @@ function MobileNav({ items }: MainNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {items?.map(
-          (item, index) =>
+          (item) =>
             item.href && (
-              <DropdownMenuItem key={index} asChild>
+              <DropdownMenuItem key={item.href} asChild>
                 <Link href={item.href}>{item.title}</Link>
               </DropdownMenuItem>
-            )
+            ),
         )}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -57,27 +53,29 @@ export function MainNav({ items }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="hidden items-center space-x-2 md:flex">
-        <Icons.logo className="h-6 w-6" />
-        <span className="hidden font-bold sm:inline-block">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-emerald-400 text-sm font-black text-zinc-950">
+          ⌁
+        </span>
+        <span className="hidden font-extrabold tracking-tight sm:inline-block">
           {siteConfig.name}
         </span>
       </Link>
       {items?.length ? (
         <nav className="hidden gap-6 md:flex">
           {items?.map(
-            (item, index) =>
+            (item) =>
               item.href && (
                 <Link
-                  key={index}
+                  key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center text-lg font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-100 sm:text-sm",
-                    item.disabled && "cursor-not-allowed opacity-80"
+                    "flex items-center text-lg font-semibold text-slate-600 hover:text-slate-900 sm:text-sm dark:text-slate-100",
+                    item.disabled && "cursor-not-allowed opacity-80",
                   )}
                 >
                   {item.title}
                 </Link>
-              )
+              ),
           )}
         </nav>
       ) : null}

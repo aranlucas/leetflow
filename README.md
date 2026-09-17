@@ -1,39 +1,49 @@
-# next-template
+# LeetFlow
 
-A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
+From problem statement to pattern in 30 seconds.
 
-## Features
+An interactive decision flowchart for LeetCode-style problems: answer 2–4
+questions about your input and output, land on the right pattern, copy a Python
+template, and solve 3 curated problems that teach it best.
 
-- Radix UI Primitives
-- Tailwind CSS
-- Fonts with `@next/font`
-- Icons from [Lucide](https://lucide.dev)
-- Dark mode with `next-themes`
-- Automatic import sorting with `@ianvs/prettier-plugin-sort-imports`
+## What's inside
 
-## Tailwind CSS Features
+- **Interactive flowchart** — custom decision / pattern nodes, guided walk mode,
+  top-down or left-right layout, minimap + controls
+- **Pattern finder sidebar** — fuzzy search across 12 patterns with progress tracking
+- **Pattern library** — signals, Python starter template (copy button), complexity,
+  and curated LeetCode problems per pattern
+- **Learned tracking** — mark patterns learned, persisted to localStorage
+- **Dark mode** — polished for late-night grinding
 
-- Class merging with `taiwind-merge`
-- Animation with `tailwindcss-animate`
-- Conditional classes with `clsx`
-- Variants with `class-variance-authority`
-- Automatic class sorting with `eslint-plugin-tailwindcss`
+## Patterns covered
 
-## Import Sort
+Two Pointers · Sliding Window · Binary Search · Hash Map/Set · Stack ·
+Heap · Backtracking · DP · Greedy · Trie · Monotonic Queue · Graph (BFS/DFS)
 
-The starter comes with `@ianvs/prettier-plugin-sort-imports` for automatically sort your imports.
+## Develop
 
-### Class Merging
-
-The `cn` util handles conditional classes and class merging.
-
-### Input
-
-```ts
-cn("px-2 bg-slate-100 py-2 bg-slate-200")
-// Outputs `p-2 bg-slate-200`
+```bash
+pnpm install
+pnpm dev
 ```
 
-## License
+```bash
+pnpm typecheck  # TypeScript 7, strict
+pnpm lint       # oxlint, all categories denied, warnings fail
+pnpm format:check  # oxfmt (sorts imports + Tailwind classes)
+pnpm build
+```
 
-Licensed under the [MIT license](https://github.com/shadcn/ui/blob/main/LICENSE.md).
+## Toolchain
+
+- Next.js 16 + React 19 + TypeScript 7
+- Tailwind CSS v4 (CSS-first config in `styles/globals.css`)
+- XY Flow v12 (`@xyflow/react`) + `@dagrejs/dagre` for layout
+- oxlint + oxfmt instead of ESLint/Prettier (typescript-eslint doesn't
+  support TS 7 yet, and `eslint-config-next` hard-requires it — see the note
+  in `.oxlintrc.json`)
+- Type-aware linting via `oxlint-tsgolint` (stable v7, built on the official
+  TypeScript Go compiler): `pnpm lint` runs `oxlint --type-aware`, covering
+  59 of typescript-eslint's 61 type-aware rules (floating promises, unsafe
+  `any` propagation, deprecated React 19 APIs, …)
